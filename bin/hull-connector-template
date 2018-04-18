@@ -1,0 +1,89 @@
+#!/usr/bin/env node
+const _ = require("lodash");
+const path = require("path");
+const fs = require("fs");
+
+const argv = require("minimist")(process.argv.slice(2));
+const gulp = require("gulp");
+const conflict = require("gulp-conflict");
+const template = require("gulp-template");
+const inquirer = require("inquirer");
+
+if (argv.path) {
+  console.log("Path to perform diff: ", path.join(__dirname, "template"));
+  process.exit(0);
+}
+
+const targetPath = argv._[0] || "./";
+
+let existingManifestJson = {};
+try {
+  const existingManifestJsonPath = path.join(process.cwd(), targetPath, "manifest.json");
+  if (fs.existsSync(existingManifestJsonPath)) {
+    console.log("Loading: ", existingManifestJsonPath);
+    existingManifestJson = require(existingManifestJsonPath);
+  }
+} catch (e) {
+  console.log("Failed to load package.json, exiting");
+  process.exit(1);
+}
+
+let existingPackageJson = {};
+try {
+  const existingPackageJsonPath = path.join(process.cwd(), targetPath, "package.json");
+  if (fs.existsSync(existingPackageJsonPath)) {
+    console.log("Loading: ", existingPackageJsonPath);
+    existingPackageJson = require(existingPackageJsonPath);
+  }
+} catch (e) {
+  console.log("Failed to load package.json, exiting");
+  process.exit(1);
+}
+
+inquirer.prompt([{
+  type: "text",
+  name: "name",
+  message: "Connector human redable name (e.g. 'Intercom')",
+  validate: function (input) { return input.match(/[a-zA-Z][a-zA-Z0-9]+/) !== null; },
+  default: existingManifestJson.name
+}, {
+  type: "confirm",
+  name: "official",
+  message: "Is this an official Hull connector?",
+  default: () => existingPackageJson.name ? existingPackageJson.name.startsWith("hull-") : false
+}, {
+  type: "text",
+  name: "package_name",
+  message: "Package name",
+  default: (data) => existingPackageJson.name || data.official === true ? `hull-${_.kebabCase(data.name)}` : _.kebabCase(data.name)
+}, {
+  type: "text",
+  name: "homepage_url",
+  message: "Homepage url",
+  default: (data) => existingPackageJson.homepage || data.official === true ? `https://github.com/hull-ships/hull-${_.kebabCase(data.name)}` : null
+}, {
+  type: "text",
+  name: "repository_url",
+  message: "Repository url",
+  default: (data) => existingPackageJson.repository.url || data.official === true ? `git://github.com/hull-ships/hull-${_.kebabCase(data.name)}` : null
+}, {
+  type: "text",
+  name: "bugs_url",
+  message: "Bugs url",
+  default: (data) => existingPackageJson.bugs.url || data.official === true ? `https://github.com/hull-ships/hull-${_.kebabCase(data.name)}/issues` : null
+}]).then((userData) => {
+  const data = _.defaults(userData, {
+    version: existingPackageJson.version,
+    template_version: require("./../package.json").version,
+    name: "test",
+    homepage_url: "",
+    repository_url: "",
+    bugs_url: "",
+  });
+
+  gulp.src(`${__dirname}/../template/**/*`, { dot: true })
+    .pipe(template(data))
+    .pipe(conflict(targetPath))
+    .pipe(gulp.dest(targetPath));
+});
+
