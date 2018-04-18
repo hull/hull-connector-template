@@ -10,7 +10,7 @@ const template = require("gulp-template");
 const inquirer = require("inquirer");
 
 if (argv.path) {
-  console.log("Path to perform diff: ", path.join(__dirname, "template"));
+  console.log("Path to perform diff: ", path.join(__dirname, "..", "template"));
   process.exit(0);
 }
 
