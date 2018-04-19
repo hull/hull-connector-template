@@ -1,49 +1,49 @@
-const glob = require('glob');
-const path = require('path');
-const _ = require('lodash');
-const webpack = require('webpack');
-const autoprefixer = require('autoprefixer');
-const HappyPack = require('happypack');
-const moment = require('moment');
+const glob = require("glob");
+const path = require("path");
+const _ = require("lodash");
+const webpack = require("webpack");
+const autoprefixer = require("autoprefixer");
+const HappyPack = require("happypack");
+const moment = require("moment");
 
-const isProduction = () => process.env.NODE_ENV === 'production';
+const isProduction = () => process.env.NODE_ENV === "production";
 
 let plugins = [
   new HappyPack({
-    id: 'jsx',
+    id: "jsx",
     threads: 4,
     loaders: [
       {
-        loader: require.resolve('babel-loader'),
+        loader: require.resolve("babel-loader"),
         query: {
           plugins: [
-            require.resolve('react-hot-loader/babel'),
+            require.resolve("react-hot-loader/babel"),
           ],
         },
       }
     ],
   }),
   new HappyPack({
-    id: 'styles',
+    id: "styles",
     threads: 2,
     loaders: [
-      { loader: require.resolve('style-loader') },
-      { loader: require.resolve('css-loader') },
-      { loader: require.resolve('sass-loader') },
+      { loader: require.resolve("style-loader") },
+      { loader: require.resolve("css-loader") },
+      { loader: require.resolve("sass-loader") },
       {
-        loader: require.resolve('postcss-loader'),
+        loader: require.resolve("postcss-loader"),
         options: {
-          indent: 'postcss',
+          indent: "postcss",
           plugins: () => [
-            require('postcss-flexbugs-fixes'), // eslint-disable-line
+            require("postcss-flexbugs-fixes"), // eslint-disable-line
             autoprefixer({
               browsers: [
-                '>1%',
-                'last 4 versions',
-                'Firefox ESR',
-                'not ie < 9', // React doesn't support IE8 anyway
+                ">1%",
+                "last 4 versions",
+                "Firefox ESR",
+                "not ie < 9", // React doesn't support IE8 anyway
               ],
-              flexbox: 'no-2009',
+              flexbox: "no-2009",
             }),
           ],
         },
@@ -52,13 +52,13 @@ let plugins = [
   }),
   new webpack.ContextReplacementPlugin(/moment[/\\]locale$/, /en/),
   new webpack.DefinePlugin({
-    'process.env': {
+    "process.env": {
       NODE_ENV: JSON.stringify(process.env.NODE_ENV),
-      BUILD_DATE: JSON.stringify(moment().format('MMMM, DD, YYYY, HH:mm:ss')),
-      GIT_COMMIT: JSON.stringify(process.env.CIRCLE_SHA1 || ''),
+      BUILD_DATE: JSON.stringify(moment().format("MMMM, DD, YYYY, HH:mm:ss")),
+      GIT_COMMIT: JSON.stringify(process.env.CIRCLE_SHA1 || ""),
     },
   }),
-  new webpack.SourceMapDevToolPlugin({ filename: '[file].map' }),
+  new webpack.SourceMapDevToolPlugin({ filename: "[file].map" }),
 ];
 
 if (isProduction()) {
@@ -72,60 +72,60 @@ if (isProduction()) {
 }
 
 const entry = _.reduce(
-  glob.sync(path.join(process.cwd(), 'src/*.js')),
+  glob.sync(path.join(process.cwd(), "src/*.js")),
   (m, v) => {
-    m[v.split('/').pop().replace('.js', '')] = v;
+    m[v.split("/").pop().replace(".js", "")] = v;
     return m;
   },
   {}
 );
 
 module.exports = {
-  devtool: isProduction() ? 'source-map' : 'inline-source-map',
+  devtool: isProduction() ? "source-map" : "inline-source-map",
 
   performance: {
-    hints: isProduction() ? 'warning' : false,
+    hints: isProduction() ? "warning" : false,
   },
 
   entry,
 
   output: {
-    path: path.join(process.cwd(), '/dist/'),
-    filename: '[name].js',
-    publicPath: '/',
+    path: path.join(process.cwd(), "dist"),
+    filename: "[name].js",
+    publicPath: "/",
   },
 
   plugins,
 
   resolve: {
-    modules: [`${process.cwd()}/src`, 'node_modules'],
-    extensions: ['.js', '.jsx', '.css', '.scss'],
+    modules: [path.join(process.cwd(), "src"), "node_modules"],
+    extensions: [".js", ".jsx", ".css", ".scss"],
   },
 
   resolveLoader: {
-    modules: ['node_modules', `${process.cwd()}/node_modules`],
+    modules: ["node_modules", path.join(process.cwd(), "node_modules")],
   },
 
   module: {
     rules: [
       {
         test: /\.jsx|\.js$/,
-        loader: require.resolve('happypack/loader'),
-        query: { id: 'jsx' },
+        loader: require.resolve("happypack/loader"),
+        query: { id: "jsx" },
         exclude: /node_modules/,
       },
       // styles
       {
         test: /\.(css|scss)$/,
-        loader: require.resolve('happypack/loader'),
-        query: { id: 'styles' },
+        loader: require.resolve("happypack/loader"),
+        query: { id: "styles" },
       },
       // svg
-      { test: /.svg$/, loader: 'svg-inline-loader' },
+      { test: /.svg$/, loader: "svg-inline-loader" },
       // images & other files
       {
         test: /\.jpe?g$|\.gif$|\.png|\.woff$|\.ttf$|\.wav$|\.mp3$/,
-        loader: 'file-loader',
+        loader: "file-loader",
       },
     ],
   },

@@ -1,19 +1,8 @@
 {
   "name": "<%= package_name %>",
-  "description": "Connector description",
   "version": "<%= version %>",
+  "description": "Connector description",
   "homepage": "<%= homepage_url %>",
-  "license": "MIT",
-  "author": {
-    "name": "Hull",
-    "email": "contact@hull.io",
-    "url": "https://github.com/hull"
-  },
-  "engines": {
-    "node": "8.11.x",
-    "npm": "5.6.x",
-    "yarn": "1.5.x"
-  },
   "repository": {
     "type": "git",
     "url": "<%= repository_url %>"
@@ -21,8 +10,28 @@
   "bugs": {
     "url": "<%= bugs_url %>"
   },
+  "license": "MIT",
+  "author": {
+    "name": "Hull",
+    "email": "contact@hull.io",
+    "url": "https://hull.io"
+  },
+  "keywords": [
+    "hull",
+    "ship",
+    "connector",
+    "hull-ship",
+    "hull-connector",
+    "hull-connector-template-<%= template_version %>"
+  ],
+  "engines": {
+    "node": "8.11.x",
+    "npm": "5.6.x",
+    "yarn": "1.5.x"
+  },
   "scripts": {
-    "build": "yarn run clean && yarn run build:server && yarn run build:client",
+    "build": "yarn run build:clean && yarn run build:server && yarn run build:client",
+    "build:clean": "rimraf dist && rimraf build",
     "build:server": "babel server -d build",
     "build:client": "NODE_ENV=production webpack --config ./webpack.config.js",
     "start": "node -r newrelic build",
@@ -33,32 +42,35 @@
     "test:combined": "NODE_ENV=test jest ./test",
     "test:unit": "NODE_ENV=test jest ./test/unit",
     "test:integration": "NODE_ENV=test jest ./test/integration",
-    "clean": "rimraf dist; rimraf build",
     "postinstall": "yarn run build"
   },
-  "keywords": [
-    "hull",
-    "ship",
-    "connector",
-    "hull-ship",
-    "hull-connector",
-    "hull-connector-template-<%= template_version %>"
-  ],
   "dependencies": {
+    "autoprefixer": "^8.3.0",
     "babel-cli": "^6.26.0",
     "babel-core": "^6.26.0",
+    "babel-loader": "^7.1.4",
     "babel-plugin-transform-flow-strip-types": "^6.22.0",
+    "babel-preset-env": "^1.6.1",
     "bluebird": "^3.4.1",
     "body-parser": "^1.18.2",
+    "css-loader": "^0.28.11",
     "express": "^4.16.3",
+    "file-loader": "^1.1.11",
+    "happypack": "^4.0.1",
     "hull": "0.13.14",
     "lodash": "^4.17.5",
     "moment": "^2.21.0",
-    "newrelic": "^2.4.1",
-    "rimraf": "^2.6.1"
+    "newrelic": "^4.0.0",
+    "postcss-flexbugs-fixes": "^3.3.0",
+    "postcss-loader": "^2.1.4",
+    "react": "^16.3.2",
+    "react-hot-loader": "^4.0.1",
+    "rimraf": "^2.6.1",
+    "sass-loader": "^7.0.1",
+    "style-loader": "^0.20.3",
+    "webpack": "^3.11.0"
   },
   "devDependencies": {
-    "assert": "^1.4.1",
     "babel-eslint": "^8.0.2",
     "babel-jest": "^22.4.1",
     "babel-register": "^6.26.0",
