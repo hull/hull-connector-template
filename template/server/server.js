@@ -45,6 +45,11 @@ function server(app: $Application, { hostSecret }: Object): $Application {
     }
   }));
 
+  // you can use object spread syntax
+  const a = { a: 1 };
+  const b = { b: 2 };
+  const c = { ...a , ...b, c: 3 };
+
   return app;
 }
 

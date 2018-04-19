@@ -3,7 +3,6 @@ services:
   yarn:
     image: node:8.11
     env_file: .env
-    network_mode: host
     entrypoint: yarn
     ports:
       - "$PORT:$PORT"
