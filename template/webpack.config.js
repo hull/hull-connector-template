@@ -16,11 +16,9 @@ let plugins = [
       {
         loader: require.resolve("babel-loader"),
         query: {
-          plugins: [
-            require.resolve("react-hot-loader/babel"),
-          ],
+          plugins: [require.resolve("react-hot-loader/babel")],
         },
-      }
+      },
     ],
   }),
   new HappyPack({
@@ -74,7 +72,12 @@ if (isProduction()) {
 const entry = _.reduce(
   glob.sync(path.join(process.cwd(), "src/*.js")),
   (m, v) => {
-    m[v.split("/").pop().replace(".js", "")] = v;
+    m[
+      v
+        .split("/")
+        .pop()
+        .replace(".js", "")
+    ] = v;
     return m;
   },
   {}
@@ -130,4 +133,3 @@ module.exports = {
     ],
   },
 };
-

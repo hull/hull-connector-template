@@ -4,11 +4,7 @@ const express = require("express");
 
 const server = require("./server");
 
-const {
-  LOG_LEVEL,
-  SECRET,
-  PORT
-} = process.env;
+const { LOG_LEVEL, SECRET, PORT } = process.env;
 
 if (LOG_LEVEL) {
   Hull.logger.transports.console.level = LOG_LEVEL;
@@ -23,8 +19,6 @@ const options = {
 
 const app = express();
 const connector = new Hull.Connector(options);
-
-app.use(middleware(connector.hostSecret));
 
 connector.setupApp(app);
 server(app, { hostSecret: options.hostSecret });
