@@ -97,7 +97,7 @@ $ yarn test:lint
 $ yarn test:unit
 ```
 
-To learn more about the testing scripts, please go to [Testing/Debugging](#testing-debugging).
+To learn more about the testing scripts, please go to [Testing/Debugging](#testingdebugging).
 
 
 **Steph #4**: deploy or contribute
