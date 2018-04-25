@@ -1,5 +1,7 @@
 # Hull Connector Template
 
+> TL;DR: start with [Five seconds overview](#five-seconds-overview).
+
 This is a scaffolding tool for creating and maintaining [Hull](http://hull.io/) connectors. It comes with base directory and file structure, default configuration and documentation files templates.
 
 The complete boilerplate template is in [template](./template) directory.
@@ -10,6 +12,8 @@ During generation it's being run through [lodash template](https://lodash.com/do
 Install it as a global node package:
 
 `npm i -g hull-connector-template`
+
+Now you can use the `hull-connector-template` command to generate or update connector base code.
 
 ## Creating new connector
 
@@ -46,3 +50,136 @@ This will return something like this:
 Then use it to run your diffing tool and compare template with actual connector code to peform more complex update:
 
 `difftool  /usr/local/lib/node_modules/hull-connector-template/template ./connector-working-path`
+
+## Connector development
+
+This section describes how the further connector development process looks like in details. The boilerplate code comes with [README.md](./template/README.md) file which contains high level overview of this section and links here for full information.
+
+This document also include some information about Hull's official development process which should allow 3rd party developers to contribute to our open-source projects.
+
+### Five seconds overview
+
+**Step #1**: generate new connector and install deps
+```bash
+$ hull-connector-template new-connector
+# answer couple of questions from the generator
+# and enter the newly generated connector directory
+$ cd new-connector
+# and install all dependencies
+$ yarn
+```
+
+This will install both production and development dependencies of your base connector. The post install script will also build the front-end and back-end application with babeljs. But you don't need to worry about that. This is a pre-deployment script.
+
+To learn more about the basic structure of the code, please go to [Repository structure](#repository-structure).
+
+**Step #2**: now start the application
+``` bash
+# start the application
+$ yarn start:dev
+```
+Your back-end server from `server` directory will be listening by default on 8082 port and it will be serving your front-end application from `src` directory. It's using babel-watch and hot reload component to not make you restart the whole thing everytime you do a change.
+
+To learn more about the development scripts, please go to [Developing](#developing).
+
+**Step #3**: code and verify!
+```bash
+# open the files in your favorite editor
+# and start coding
+$ edit server/server.js
+# then perform whole test script to check
+# if you didn't break anything
+$ yarn test
+# or if you want to be more specific,
+# run only linting
+$ yarn test:lint
+# or unit tests only
+$ yarn test:unit
+```
+
+To learn more about the testing scripts, please go to [Testing/Debugging](#testing-debugging).
+
+
+**Steph #4**: deploy or contribute
+
+If you want to deploy your connector on your own you can run it on production like this:
+
+```bash
+yarn start
+```
+
+or if you want to contribute to one of Hull's official connectors please fork our repository and issue a PR when work is done.
+
+### Repository structure
+
+This is a reference of how the common boilerplate code structure looks like:
+
+```text
+root/
+
+  # development tools configuration
+  .circleci/        - Configuration for CircleCI, it runs all tests on each build and enforce test coverage
+  .babelrc          - the server side only babeljs configuration
+  src/.babelrc      - the client side only babeljs configuration
+  .eslintrc         - the server side eslintrc configuration
+  src/.eslintrc.    - the client side eslint configuration which extends the one at root
+  .prettierrc       - global prettier configuration, applied for the whole code base
+  .jest.config.js   - test runnner configuration file
+  webpack.config.js - 
+
+
+  # Project definitions and docs
+  manifest.json - The main file telling Hull how this connector works
+  package.json  - npm project defition
+  CHANGELOG.md  - each release changes are descibed here
+  README.md     - technical overview of the connector
+
+  # Code base
+  assets/ - Images, Logos and User Guide (readme.md)
+    readme.md - The User Guide which is served in the hull dashboard and linked from technical README.md
+    docs/     - Images and other assets for User Guide
+
+  flow-typed/ - Flow type definitions
+
+  server/    - Server-side code for the connector
+    actions/ - Route handlers for express application
+    lib/     - Business logic of the connector
+      sync-agent.js
+
+  src/ - Front-end application which will be served by the backend application
+
+  test/
+    integration/ - Integration tests
+      fixtures/  - Fixtures for notifications, payloads, etc.
+      helper/    - Mocking helpers for tests
+      scenarios/ - Expectations and inputs for various test scenarios
+    unit/        - Unit tests
+```
+
+### Developing
+
+To successfully build the sources on your machine, make sure that you have the correct version of node along with one package manager installed. See `engines` in [package.json](/package.json) for details.
+
+### Testing/Debugging
+
+Execute `yarn run test` or `npm run test` in the repository root to run all tests.
+
+If you want to run the connector on your local machine, execute `yarn run start:dev` or `npm run start:dev` which will start a new node server.
+Make sure to set the proper environment variables when running the code locally.
+
+## Running and writing tests
+
+There are two sets of tests, unit tests and integration tests. Please use unit tests for all features testing. The purpose of integration tests is just end-to-end validation of functionality on sample applications.
+
+Integration tests for the `SyncAgent` are organized in scenarios. Please see the [Test Scenarios Guide](/test/integration/scenarios/README.md) for a detailed description of the scenarios.
+
+## Branches
+
+- We follow the [Git Flow](http://nvie.com/posts/a-successful-git-branching-model/) model.
+- [master](<%= repository_url %>/tree/master) has the _latest_ version released.
+- [develop](<%= repository_url %>/tree/develop) has the code for the _next_ release.
+
+### Building
+
+Once you have the prerequisites installed, execute `yarn run build` or `npm run build` in the repository root to build the project locally.
+

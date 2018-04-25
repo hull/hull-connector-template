@@ -3,16 +3,22 @@
 ## Getting Started
 
 To install this connector, go to your Hull Dashboard and select `<%= name %>` from the list of available connectors.
-For more information about the configuration of this connector, see the [User Guide](/assets/readme.md).
+For more information about the configuration of this connector, see the [User Guide](./assets/readme.md).
 
-## Repository structure
+## Connector development
+
+This section describe technical aspects of the connector code. If you are looking for the customer usage documentation please refer the `Getting Started` section above.
+
+This is a high level overview how to work with this project. Full documentation is available in the [hull-connector-template project](https://github.com/hull/hull-connector-template#connector-development).
+
+### Repository structure
+
+This is a basic repository structure descibed.
+For full infromation please go to [Repository structure](https://github.com/hull/hull-connector-template#repository-structure).
 
 ```text
 root/
-  .circleci/ - Configuration for CircleCI
-
   assets/ - Images, Logos and User Guide (readme.md)
-    docs/ - Images and other assets for User Guide
 
   flow-typed/ - Flow type definitions
 
@@ -20,6 +26,8 @@ root/
     actions/ - Route handlers for express application
     lib/     - Business logic of the connector
       sync-agent.js
+
+  src/ - Front-end application which will be served by the backend application
 
   test/
     integration/ - Integration tests
@@ -29,15 +37,11 @@ root/
     unit/        - Unit tests
 ```
 
-## Developing
+### Developing
 
 To successfully build the sources on your machine, make sure that you have the correct version of node along with one package manager installed. See `engines` in [package.json](/package.json) for details.
 
-## Building
-
-Once you have the prerequisites installed, execute `yarn run build` or `npm run build` in the repository root to build the project locally.
-
-## Testing/Debugging
+### Testing/Debugging
 
 Execute `yarn run test` or `npm run test` in the repository root to run all tests.
 
@@ -59,3 +63,7 @@ Integration tests for the `SyncAgent` are organized in scenarios. Please see the
 ## Changelog
 
 The changelog is located at the root of this repository, see [CHANGELOG.md](/CHANGELOG.md).
+
+### Building
+
+Once you have the prerequisites installed, execute `yarn run build` or `npm run build` in the repository root to build the project locally.
