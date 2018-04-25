@@ -92,6 +92,9 @@
     "flow-typed": "^2.4.0",
     "jest": "^22.4.2",
     "nock": "^9.0.14",
-    "prettier": "^1.12.1"
+    "prettier": "^1.12.1",
+    "progress-bar-webpack-plugin": "^1.11.0",
+    "webpack-dev-middleware": "^2.0.2",
+    "webpack-hot-middleware": "^2.22.1"
   }
 }

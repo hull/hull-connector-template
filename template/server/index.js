@@ -4,7 +4,7 @@ const express = require("express");
 
 const server = require("./server");
 
-const { LOG_LEVEL, SECRET, PORT } = process.env;
+const { LOG_LEVEL, SECRET, PORT, NODE_ENV } = process.env;
 
 if (LOG_LEVEL) {
   Hull.logger.transports.console.level = LOG_LEVEL;
@@ -19,6 +19,11 @@ const options = {
 
 const app = express();
 const connector = new Hull.Connector(options);
+
+if (NODE_ENV === "development") {
+  const devMode = require("./lib/dev-mode"); // eslint-disable-line global-require
+  devMode(app);
+}
 
 connector.setupApp(app);
 server(app, { hostSecret: options.hostSecret });
