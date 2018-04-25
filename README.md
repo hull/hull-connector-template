@@ -110,6 +110,8 @@ yarn start
 
 or if you want to contribute to one of Hull's official connectors please fork our repository and issue a PR when work is done.
 
+Now you are good to jump into details below. Good luck!
+
 ### Repository structure
 
 This is a reference of how the common boilerplate code structure looks like:
@@ -167,19 +169,15 @@ Execute `yarn run test` or `npm run test` in the repository root to run all test
 If you want to run the connector on your local machine, execute `yarn run start:dev` or `npm run start:dev` which will start a new node server.
 Make sure to set the proper environment variables when running the code locally.
 
-## Running and writing tests
+#### Running and writing tests
 
 There are two sets of tests, unit tests and integration tests. Please use unit tests for all features testing. The purpose of integration tests is just end-to-end validation of functionality on sample applications.
 
 Integration tests for the `SyncAgent` are organized in scenarios. Please see the [Test Scenarios Guide](/test/integration/scenarios/README.md) for a detailed description of the scenarios.
 
-## Branches
+### Releasing
 
-- We follow the [Git Flow](http://nvie.com/posts/a-successful-git-branching-model/) model.
-- [master](<%= repository_url %>/tree/master) has the _latest_ version released.
-- [develop](<%= repository_url %>/tree/develop) has the code for the _next_ release.
-
-### Building
+We follow the [Git Flow](http://nvie.com/posts/a-successful-git-branching-model/) model, [semver](http://semver.org/) for versioning and we maintain CHANGELOG.md for each release of the production build.
 
 Once you have the prerequisites installed, execute `yarn run build` or `npm run build` in the repository root to build the project locally.
 
