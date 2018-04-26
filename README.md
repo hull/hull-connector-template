@@ -175,6 +175,86 @@ There are two sets of tests, unit tests and integration tests. Please use unit t
 
 Integration tests for the `SyncAgent` are organized in scenarios. Please see the [Test Scenarios Guide](/test/integration/scenarios/README.md) for a detailed description of the scenarios.
 
+#### Integration-testing for logs and connector responses 
+**Mockr** is a testing addition to make it easy to simulate calls and settings and write assertions on the connector's responses to Hull
+
+This boilerplate comes with `mocha/chai/sinon/nock` already setup for server tests. It also includes `test/integration/support/mockr` package which sets up some mocks and `minihull`, which is a stripped down version of hull that's able to send messages to connectors and offer expectations on what the connector should send to the Firehose.
+
+##### Here's how:
+
+```js
+const { expect } = require("chai");
+const mockr = require("./support/mockr");
+
+// Your server's entry point, with the same format as the one `hull-connector` bundles.
+// Options will be passed to it.
+const server = require("../../server/server");
+
+describe("Test Group", () => {
+  // Start the mocks. they will run `beforeEach` and `afterEach` cleanups for you,
+  // Start a development server
+  const mocks = mockr({
+    server
+    beforeEach,
+    afterEach,
+    port: 8000,
+    segments: [{ id: "1", name: "A" }], // Segments that should exist on the server
+  });
+
+  it("should behave properly", done => {
+    const myNock = mocks
+      .nock("https://api.myremote.test.com")
+      .get("/test")
+      .query({ foo: "bar" })
+      .reply(200, [{ email: "foo@foo.bar", id: "foobar" }]);
+
+    // Optional, if you want to stub more things that your connector
+    // will access during it's flow.
+    mocks.minihull.stubApp("/api/v1/search/user_reports").respond({
+      pagination: { total: 0 },
+      aggregations: {
+        without_email: { doc_count: 0 },
+        by_source: { buckets: [] },
+      },
+    });
+
+    // Send a `user:update` call to the connector.
+    mocks.minihull.userUpdate(
+      {
+        // Connector Settings
+        connector: {
+          id: "123456789012345678901234",
+          private_settings: {
+            api_key: "123",
+            handle_accounts: true,
+            prospect_enabled: true,
+            prospect_segments: ["1"],
+            prospect_filter_titles: ["foo"],
+            prospect_limit_count: 2,
+          },
+        },
+        // Message payload
+        messages: [
+          {
+            user: { id: "abc", "traits/clearbit/source": "reveal" },
+            account: { id: "ACCOUNTID", domain: "domain.com" },
+            segments: [{ id: "1" }],
+          },
+        ],
+      },
+      // This is what the Firehose receives.
+      ({ batch, logs }) => {
+        const [first, second, third, fourth] = batch;
+        expect(batch.length).to.equal(4);
+        expect(logs[1].message).to.equal("outgoing.user.start");
+        myNock.done();
+        done();
+      }
+    );
+  });
+});
+```
+
 ### Releasing
 
 We follow the [Git Flow](http://nvie.com/posts/a-successful-git-branching-model/) model, [semver](http://semver.org/) for versioning and we maintain CHANGELOG.md for each release of the production build.

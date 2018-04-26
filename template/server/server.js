@@ -59,6 +59,12 @@ function server(app: $Application, { token }: Object): $Application {
 
   console.log(c);
 
+  // you can use async/await
+  async function testAsync() {
+    await Promise.resolve();
+  }
+  testAsync();
+
   return app;
 }
 
