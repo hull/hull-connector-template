@@ -1,12 +1,12 @@
 {
   "name": "<%= name %>",
+  "version": "<%= version %>",
   "description": "description",
   "tags": ["incoming", "outgoing", "batch", "oneColumn", "smart-notifier"],
   "ui": false,
   "picture": "picture.png",
   "admin": "admin.html",
   "readme": "readme.md",
-  "version": "<%= version %>",
   "private_settings": [],
   "settings": [],
   "resources": [],

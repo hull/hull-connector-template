@@ -23,18 +23,14 @@ coverage
 # Grunt intermediate storage (http://gruntjs.com/creating-plugins#storing-task-files)
 .grunt
 
-# Bower dependency directory (https://bower.io/)
-bower_components
 
 # node-waf configuration
 .lock-wscript
 
-# Compiled binary addons (http://nodejs.org/api/addons.html)
-build/Release
-
 # Dependency directories
 node_modules/
 jspm_packages/
+bower_components
 
 # Typescript v1 declaration files
 typings/
@@ -61,10 +57,12 @@ typings/
 # package lock file from npm
 package-lock.json
 
-# workspace settings for VS code
+# settings for different editors
 .vscode
+.idea
 
-# build directory
+# build directories
 build
+dist
+tmp
 
-yarn-error.log
