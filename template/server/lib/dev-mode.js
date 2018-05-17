@@ -16,7 +16,7 @@ function devMode(app) {
         require.resolve("babel-polyfill"),
         require.resolve("react-hot-loader/patch"),
         require.resolve("webpack-hot-middleware/client"),
-        v,
+        v
       ];
       return m;
     },
@@ -28,7 +28,7 @@ function devMode(app) {
     ...config.plugins,
     new webpack.NamedModulesPlugin(),
     new ProgressBarPlugin({ clear: false }),
-    new webpack.NoEmitOnErrorsPlugin(),
+    new webpack.NoEmitOnErrorsPlugin()
   ];
 
   const compiler = webpack({ ...config, entry, plugins });
@@ -44,14 +44,14 @@ function devMode(app) {
       watchContentBase: true,
       stats: { colors: true },
       watchOptions: {
-        ignored: /node_modules/,
+        ignored: /node_modules/
       },
       historyApiFallback: {
-        disableDotRule: true,
+        disableDotRule: true
       },
 
       headers: { "Access-Control-Allow-Origin": "http://localhost" },
-      publicPath: config.output.publicPath,
+      publicPath: config.output.publicPath
     })
   );
   app.use(webpackHotMiddleware(compiler));

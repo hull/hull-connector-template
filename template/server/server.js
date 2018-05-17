@@ -4,7 +4,7 @@ import type { TRequest, THullReqContext } from "hull";
 
 const {
   smartNotifierHandler,
-  THullUserUpdateMessage,
+  THullUserUpdateMessage
 } = require("hull/lib/utils");
 const bodyParser = require("body-parser");
 
@@ -23,11 +23,11 @@ function server(app: $Application, { token }: Object): $Application {
     "/batch",
     smartNotifierHandler({
       userHandlerOptions: {
-        groupTraits: false,
+        groupTraits: false
       },
       handlers: {
-        "user:update": updateUser,
-      },
+        "user:update": updateUser
+      }
     })
   );
 
@@ -43,12 +43,12 @@ function server(app: $Application, { token }: Object): $Application {
             ctx.smartNotifierResponse.setFlowControl({
               type: "next",
               in: parseInt(process.env.FLOW_CONTROL_IN, 10) || 1000,
-              size: parseInt(process.env.FLOW_CONTROL_SIZE, 10) || 100,
+              size: parseInt(process.env.FLOW_CONTROL_SIZE, 10) || 100
             });
           }
           return updateUser(ctx, messages);
-        },
-      },
+        }
+      }
     })
   );
 

@@ -14,7 +14,7 @@ Hull.logger.transports.console.json = true;
 
 const options = {
   hostSecret: SECRET || "1234",
-  port: PORT || 8082,
+  port: PORT || 8082
 };
 
 const app = express();

@@ -18,8 +18,7 @@
     "flowtype",
     "flowtype-errors",
     "jest",
-    "prettier",
-    "react"
+    "prettier"
   ],
   "rules": {
     "arrow-body-style" : [0],
