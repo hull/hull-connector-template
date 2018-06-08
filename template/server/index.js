@@ -1,6 +1,8 @@
 /* @flow */
 const Hull = require("hull");
 const express = require("express");
+const { devMode } = require("hull/lib/utils");
+const webpackConfig = require("../webpack.config");
 
 const server = require("./server");
 
@@ -21,8 +23,7 @@ const app = express();
 const connector = new Hull.Connector(options);
 
 if (NODE_ENV === "development") {
-  const devMode = require("./lib/dev-mode"); // eslint-disable-line global-require
-  devMode(app);
+  devMode(app, webpackConfig);
 }
 
 connector.setupApp(app);

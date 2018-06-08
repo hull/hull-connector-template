@@ -1,6 +1,6 @@
 {
   "name": "hull-connector-template",
-  "version": "0.1.2",
+  "version": "1.0.0",
   "description": "",
   "bin": {
     "hull-connector-template": "./bin/hull-connector-template"

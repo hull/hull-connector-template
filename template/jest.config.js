@@ -2,8 +2,7 @@ module.exports = {
   "collectCoverage": true,
   "collectCoverageFrom": [
     "src/**/*.{js,jsx}",
-    "!src/dll.js",
-    "!src/vendors.js"
+    "server/**/*.{js,jsx}"
   ],
   "coveragePathIgnorePatterns": [
     "/node_modules/",
@@ -11,19 +10,18 @@ module.exports = {
   ],
   "coverageThreshold": {
     "global": {
-      "branches": 80,
-      "functions": 80,
-      "lines": 90,
-      "statements": 90
+      "branches": 40,
+      "functions": 70,
+      "lines": 60,
+      "statements": 60
     }
   },
   "transform": {
     "^.+\\.(js|jsx)$": "<rootDir>/node_modules/babel-jest"
   },
   "testEnvironment": "node",
-  "testMatch": ["<rootDir>/test/unit/**/*.js", "<rootDir>/test/integration/**/*.js"],
+  "testMatch": ["<rootDir>/test/unit/**/*-test.js", "<rootDir>/test/integration/**/*-test.js"],
   "transformIgnorePatterns": ["[/\\\\]node_modules[/\\\\].+\\.(js|jsx)$"],
   "testPathIgnorePatterns": [
     "<rootDir>/(dist|docs|dll|config|flow-typed|node_modules)/"
   ]
-};
